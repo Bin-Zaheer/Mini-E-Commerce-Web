@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { IoHomeOutline } from "react-icons/io5";
 import { FaOpencart } from "react-icons/fa";
 import { Cart } from '../Context/Cart';
@@ -10,7 +10,7 @@ function Header() {
   const {isOpen, setisOpen} = useContext(Cart)
   const [numb, setNumb] = useState()
   useEffect(() => {
-    let cartData = JSON.parse(localStorage.getItem('cartData')) || [];
+    let cartData = JSON.parse(localStorage.getItem('cartData') as string) || [];
     setNumb(cartData.length);
   }, [isOpen]);
 

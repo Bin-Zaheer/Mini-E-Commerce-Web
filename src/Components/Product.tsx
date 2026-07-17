@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { MdOutlineCategory } from "react-icons/md";
 import { FaOpencart } from "react-icons/fa";
 import { useFetch } from "../Hooks/useFetch";
@@ -7,9 +7,9 @@ import { Link } from "react-router-dom";
 import { Cart } from "../Context/Cart";
 
 function Product() {
-  const { isOpen, setisOpen } = useContext(Cart);
+  const {setisOpen } = useContext(Cart);
 
-  interface ProductType {
+  interface Product {
     id: number;
     title: string;
     description: string;
@@ -18,16 +18,18 @@ function Product() {
     category?: string;
   }
 
+
+
   const [change, setChange] = useState("All");
-  const { data, loading, error } = useFetch<ProductType[]>(
+  const { data, loading, error } = useFetch(
     change === "All"
       ? "https://dummyjson.com/products"
       : `https://dummyjson.com/products/category/${change}`,
-  );
+  ) 
 
-  function AddCart(id) {
-    let filteredData = data.filter((item) => item.id === id);
-    let cartData = JSON.parse(localStorage.getItem("cartData")) || [];
+  function AddCart(id:number) {
+    let filteredData = (data as Product[]).filter((item) => item.id === id);
+    let cartData = JSON.parse(localStorage.getItem("cartData") as string ) || [];
 
     cartData.push({ ...filteredData[0], qty: 1 });
     localStorage.setItem("cartData", JSON.stringify(cartData));
@@ -93,7 +95,7 @@ function Product() {
           ) : error ? (
             <p className="text-white">Error fetching products.</p>
           ) : data && data.length > 0 ? (
-            data.map((product) => (
+            (data as Product[]).map((product) => (
               <div
                 key={product.id}
                 className="w-[45%] md:w-[30%] sm:w-[30%] 2xl:w-[23%] bg-gray-800 rounded-xl flex-col items-center justify-items-center gap-2 p-2 hover:scale-110 transition-all duration-300 ease-in-out"

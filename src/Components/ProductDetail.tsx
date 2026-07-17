@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useFetch } from "../Hooks/useFetch";
+import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { MdOutlineViewInAr } from "react-icons/md";
@@ -7,18 +6,28 @@ import { GiLightningStorm } from "react-icons/gi";
 import { Cart } from "../Context/Cart";
 
 function ProductDetail() {
-  let { isOpen, setisOpen } = useContext(Cart);
+
+ interface Product {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    qty: number;
+    images: string;
+  }
+  
+  let {setisOpen} = useContext(Cart)
   const { id } = useParams();
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Product>();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any>();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://dummyjson.com/products/${id}`);
+        const response = await fetch(`https://dummyjson.com/produs/${id}`);
         const da = await response.json();
 
         console.log(da);
@@ -26,6 +35,8 @@ function ProductDetail() {
         setLoading(false);
       } catch (error) {
         setError(error);
+        console.log(typeof error);
+        
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
@@ -34,12 +45,14 @@ function ProductDetail() {
     fetchData();
   }, [id]);
 
-  function AddCart(id) {
-    let cartData = JSON.parse(localStorage.getItem("cartData")) || [];
-    cartData.push({ ...data, qty: 1 });
-    localStorage.setItem("cartData", JSON.stringify(cartData));
-    setisOpen(true);
-  }
+  function AddCart() {
+  let cartData = JSON.parse(localStorage.getItem("cartData") as string) || [];
+  cartData.push({...data,qty:1});
+  localStorage.setItem("cartData", JSON.stringify(cartData));
+  setisOpen(true);
+}
+
+
 
   return (
     <>
@@ -54,7 +67,7 @@ function ProductDetail() {
         >
           <div className="2xl:flex 2xl:justify-center sm:w-[100%] 2xl:items-center gap-3 md:w-[50%]  2xl:w-[70%] lg:w-[70%]">
             <div className=" bg-gray-300">
-              <img className="" src={data.images[0]} alt={data.name} />
+              <img className="" src={data.images[0]} alt={data.title} />
             </div>
             <div className=" ml-10">
               <h1 className="text-2xl font-bold text-white">{data.title}</h1>
@@ -81,10 +94,7 @@ function ProductDetail() {
                 </p>
               </div>
 
-              <button
-                onClick={() => AddCart(data.id)}
-                className="w-full bg-orange-500 hover:bg-orange-600 cursor-pointer text-white font-semibold py-3 rounded-xl transition-all shadow-md mt-2"
-              >
+              <button onClick={() => AddCart()} className="w-full bg-orange-500 hover:bg-orange-600 cursor-pointer text-white font-semibold py-3 rounded-xl transition-all shadow-md mt-2">
                 Add to Cart
               </button>
               <Link to="/">

@@ -20,6 +20,7 @@ interface Product {
   name: string;
   description: string;
   price: number;
+  qty: number,
   imageUrl: string;
 }   
 
@@ -44,7 +45,7 @@ export function useFetch<T>(url: string): FetchState<T> {
        console.log('before finally:', da);
      } catch (error) {
         setError(error);
-       console.error('Error fetching data:', error);
+       console.error('Error fetching data:');
      } finally {
        setLoading(false);
        console.log('after finally:', data);

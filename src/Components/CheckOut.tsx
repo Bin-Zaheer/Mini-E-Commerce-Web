@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { FaDollarSign } from "react-icons/fa";
-import { GiFastArrow } from "react-icons/gi";
 import { LuShip } from "react-icons/lu";
 import { FaBoxOpen } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function CheckOut() {
+  interface Product {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    qty: number;
+    images: string;
+  }
+
   const [disable, setDisable] = useState(true);
   const navigate = useNavigate();
 
@@ -16,17 +23,20 @@ function CheckOut() {
     }
   };
 
-  let cartData = JSON.parse(localStorage.getItem("cartData")) || [];
+  let cartData = JSON.parse(localStorage.getItem("cartData") as string) || [];
 
-  let total = cartData.reduce((total, item) => total + item.price, 0);
+  let total = cartData.reduce(
+    (total: number, item: Product) => total + item.price,
+    0,
+  );
 
-  function submit(e) {
-    e.preventDefault();
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    const form = e.currentTarget;
     const hasValues =
-      e.target.form.name.value.trim() &&
-      e.target.form.address.value.trim() &&
-      e.target.form.city.value.trim() &&
-      e.target.form.pincode.value.trim();
+      (form.elements.namedItem("name") as HTMLInputElement).value.trim() &&
+      (form.elements.namedItem("address") as HTMLInputElement).value.trim() &&
+      (form.elements.namedItem("city") as HTMLInputElement).value.trim() &&
+      (form.elements.namedItem("pincode") as HTMLInputElement).value.trim();
 
     setDisable(!hasValues);
   }
@@ -104,7 +114,7 @@ function CheckOut() {
           {cartData.length === 0 ? (
             <p className="text-white">Your cart is empty.</p>
           ) : (
-            cartData.map((item, index) => (
+            cartData.map((item:Product, index:number) => (
               <div className="" key={index}>
                 <p className="flex justify-between">
                   <span className="text-gray-400">{item.title}</span>

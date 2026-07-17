@@ -1,8 +1,6 @@
-import { useState } from "react";
-import Search from "./Components/Search";
+
 import Product from "./Components/Product";
-import SideCart from "./Components/SideCart";
-import { Route, Router, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import ProductDetail from "./Components/ProductDetail";
 import Cart from "./Components/Cart";
 import CheckOut from "./Components/CheckOut";

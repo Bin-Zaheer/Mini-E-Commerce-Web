@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaDollarSign } from "react-icons/fa";
 import { GiFastArrow } from "react-icons/gi";
 import { Link } from "react-router-dom";
 
 function Cart() {
+
+ interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  qty: number,
+  images: string;
+}  
+
   const [cartData, setCartData] = useState(() => {
-  return JSON.parse(localStorage.getItem("cartData")) || [];
+  return JSON.parse(localStorage.getItem("cartData") as string) || [];
 });
  const total = cartData.reduce(
-  (total, item) => total + item.price * item.qty,
+  (total:number, item:any) => total + item.price * item.qty,
   0
 );
 
-  const increaseQty = (productId) => {
+  const increaseQty = (productId:number) => {
 
-    const updatedProducts = cartData.map((product) =>
+    const updatedProducts = cartData.map((product:Product) =>
       product.id === productId ? { ...product, qty: product.qty + 1 } : product,
     );
 
@@ -23,9 +33,9 @@ function Cart() {
     localStorage.setItem("cartData", JSON.stringify(updatedProducts));
   };
 
-  const decreaseQty = (productId) => {
+  const decreaseQty = (productId:number) => {
 
-    const updatedProducts = cartData.map((product) =>
+    const updatedProducts = cartData.map((product:Product) =>
       product.id === productId && product.qty > 1 ? { ...product, qty: product.qty - 1 } : product,
     );
 
@@ -36,8 +46,8 @@ function Cart() {
 
  
 
-  function handle(id) {
-    let updatedCartData = cartData.filter((item) => item.id !== id);
+  function handle(id:number) {
+    let updatedCartData = cartData.filter((item:Product) => item.id !== id);
      setCartData(updatedCartData);
     localStorage.setItem("cartData", JSON.stringify(updatedCartData));
   }
@@ -55,7 +65,7 @@ function Cart() {
           <p className="text-white">Your cart is empty.</p>
         ) : (
           <div className="">
-            {cartData.map((item, index) => (
+            {cartData.map((item:Product, index:number) => (
               <div
                 className="bg-gray-800 p-4 m-2 flex gap-10 items-center justify-between"
                 key={index}

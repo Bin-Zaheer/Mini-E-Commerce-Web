@@ -1,13 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { Cart } from '../Context/Cart'
 import { Link } from 'react-router-dom';
 
 function SideCart() {   
+  interface Product {
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    qty: number;
+    images: string;
+  }
+
 const {isOpen, setisOpen} = useContext(Cart)
 
-let cartData = JSON.parse(localStorage.getItem("cartData")) || [];
+let cartData = JSON.parse(localStorage.getItem("cartData") as string) || [];
 
-let total = cartData.reduce((total, item) => total + item.price, 0);
+let total = cartData.reduce((total:number, item:Product) => total + item.price, 0);
 
 console.log(cartData.length);
 
@@ -27,7 +36,7 @@ console.log(cartData.length);
 
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
 
-          {cartData.map((item, index) => (
+          {cartData.map((item:Product) => (
           
           <div className="p-3 border border-gray-100 rounded-xl bg-gray-50/50 flex items-center gap-3">
             <img src={item.images[0]} alt={item.title} className="w-16 h-16 rounded-lg object-cover" />
