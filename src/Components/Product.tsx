@@ -39,7 +39,7 @@ function Product() {
   return (
     <>
       <Search />
-      <div className="w-[100%]  h-[100vh] flex-col items-center justify-items-center  mt-5 ">
+      <div className="w-[100%]  flex-col items-center justify-items-center  mt-5 ">
         <div className="flex items-center justify-center w-[100%] md:w-[70%] 2xl:justify-items-start  text-white gap-2 2xl:gap-5 border-b-1 border-white p-4">
           <MdOutlineCategory className="text-orange-500 text-sm 2xl:text-2xl" />
           <p
